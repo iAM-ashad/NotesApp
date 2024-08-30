@@ -1,5 +1,6 @@
 package com.example.notesapp.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,27 +11,28 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.notesapp.R
 import com.example.notesapp.dataLayer.Note
 
 @Composable
 fun InputTextField(
    textFieldValue: String,
    onTextChange: (String) -> Unit,
-    labelText: String,
+   labelText: String,
+   maxLines: Int,
    modifier: Modifier = Modifier
 ) {
     TextField(
@@ -46,6 +48,7 @@ fun InputTextField(
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp
         ),
+        maxLines = maxLines,
         modifier = Modifier
             .padding(horizontal = 55.dp, vertical = 10.dp)
             .clip(RoundedCornerShape(topEnd = 25.dp))
@@ -82,7 +85,7 @@ fun NoteItem(
         modifier = Modifier
             .padding(5.dp)
             .fillMaxSize()
-            .clickable {onItemClicked(noteObject)}
+            .clickable { onItemClicked(noteObject) }
     ) {
         Text(
             text = noteObject.title,
@@ -94,9 +97,19 @@ fun NoteItem(
         Text(
             text = noteObject.description,
             color = Color.White,
-            fontSize = 15.sp,
+            fontSize = 20.sp,
             modifier = Modifier
                 .padding(5.dp)
         )
     }
+}
+
+@Composable
+fun AppIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.app_icon),
+        contentDescription = stringResource(R.string.app_icon),
+        modifier = Modifier
+            .padding(10.dp)
+    )
 }
