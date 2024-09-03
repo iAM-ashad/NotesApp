@@ -6,13 +6,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.ViewModel
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.notesapp.dataLayer.LocalNotesDataSource
 import com.example.notesapp.model.NoteScreenViewModel
 import com.example.notesapp.screens.NoteScreen
 import com.example.notesapp.ui.theme.NotesAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +21,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             NotesAppTheme {
                 Surface {
-                    NotesApp()
+                    val noteViewModel = viewModel<NoteScreenViewModel>()
+                    NotesApp(noteViewModel)
                 }
             }
         }
@@ -28,9 +30,9 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun NotesApp(noteViewModel: NoteScreenViewModel = viewModel()) {
+fun NotesApp(noteViewModel: NoteScreenViewModel) {
 
-    val notesList = noteViewModel.getAllNotes()
+    val notesList = noteViewModel.notesList.collectAsState().value
 
     NoteScreen(
         notes = notesList,
